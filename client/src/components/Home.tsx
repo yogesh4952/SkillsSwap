@@ -1,6 +1,7 @@
 import Banner from '../pages/Banner';
 import WhyChoose from '../pages/WhyChoose';
 import Works from '../pages/Works';
+import Footer from './Footer';
 
 const Home = () => {
   return (
@@ -57,6 +58,7 @@ const Home = () => {
 
       <WhyChoose />
       <Banner />
+      <Footer />
     </>
   );
 };
