@@ -1,3 +1,5 @@
+import Banner from '../pages/Banner';
+import WhyChoose from '../pages/WhyChoose';
 import Works from '../pages/Works';
 
 const Home = () => {
@@ -52,6 +54,9 @@ const Home = () => {
         </div>
       </div>
       <Works />
+
+      <WhyChoose />
+      <Banner />
     </>
   );
 };
