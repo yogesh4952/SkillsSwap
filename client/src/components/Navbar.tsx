@@ -60,7 +60,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className='w-full bg-white shadow-md flex justify-between items-center sticky top-0 z-50 px-6 py-4'>
+    <nav className='w-full px-4  bg-white shadow-md flex justify-around items-center sticky top-0 z-50 py-4'>
       {/* Logo Section */}
       <div className='flex gap-2 items-center'>
         <Logo />

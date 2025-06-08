@@ -1,3 +1,4 @@
+
 export type Asset = {
   icon: string;
   heading: string;
@@ -90,35 +91,68 @@ export const categories: Category[] = [
 ];
 
 export type item = {
-  title: string,
-  logo: string,
-  number: number,
-  description: string
-}
+  title: string;
+  logo: string;
+  number: number;
+  description: string;
+};
 
 export const dashboardItems: item[] = [
   {
-    title: "Total Matches",
-    logo: "",
+    title: 'Total Matches',
+    logo: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M2 22C2 17.5817 5.58172 14 10 14C14.4183 14 18 17.5817 18 22H16C16 18.6863 13.3137 16 10 16C6.68629 16 4 18.6863 4 22H2ZM10 13C6.685 13 4 10.315 4 7C4 3.685 6.685 1 10 1C13.315 1 16 3.685 16 7C16 10.315 13.315 13 10 13ZM10 11C12.21 11 14 9.21 14 7C14 4.79 12.21 3 10 3C7.79 3 6 4.79 6 7C6 9.21 7.79 11 10 11ZM18.2837 14.7028C21.0644 15.9561 23 18.752 23 22H21C21 19.564 19.5483 17.4671 17.4628 16.5271L18.2837 14.7028ZM17.5962 3.41321C19.5944 4.23703 21 6.20361 21 8.5C21 11.3702 18.8042 13.7252 16 13.9776V11.9646C17.6967 11.7222 19 10.264 19 8.5C19 7.11935 18.2016 5.92603 17.041 5.35635L17.5962 3.41321Z"></path></svg>',
     number: 24,
-    description: "+3 from last week"
+    description: '+3 from last week',
   },
   {
-    title: "Active Sessions",
-    logo: "",
+    title: 'Active Sessions',
+    logo: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M7.29117 20.8242L2 22L3.17581 16.7088C2.42544 15.3056 2 13.7025 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C10.2975 22 8.6944 21.5746 7.29117 20.8242ZM7.58075 18.711L8.23428 19.0605C9.38248 19.6745 10.6655 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 13.3345 4.32549 14.6175 4.93949 15.7657L5.28896 16.4192L4.63416 19.3658L7.58075 18.711Z"></path></svg>',
     number: 8,
-    description: "2 scheduled today"
+    description: '2 scheduled today',
   },
   {
-    title: "Skills Learned",
-    logo: "",
+    title: 'Skills Learned',
+    logo: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M13 21V23H11V21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H9C10.1947 3 11.2671 3.52375 12 4.35418C12.7329 3.52375 13.8053 3 15 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H13ZM20 19V5H15C13.8954 5 13 5.89543 13 7V19H20ZM11 19V7C11 5.89543 10.1046 5 9 5H4V19H11Z"></path></svg>',
     number: 12,
-    description: "+2 this month"
+    description: '+2 this month',
   },
   {
-    title: "Rating",
-    logo: "",
+    title: 'Rating',
+    logo: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12.0006 18.26L4.94715 22.2082L6.52248 14.2799L0.587891 8.7918L8.61493 7.84006L12.0006 0.5L15.3862 7.84006L23.4132 8.7918L17.4787 14.2799L19.054 22.2082L12.0006 18.26ZM12.0006 15.968L16.2473 18.3451L15.2988 13.5717L18.8719 10.2674L14.039 9.69434L12.0006 5.27502L9.96214 9.69434L5.12921 10.2674L8.70231 13.5717L7.75383 18.3451L12.0006 15.968Z"></path></svg>',
     number: 4.8,
-    description: "Based on 15 reviews"
-  }
+    description: 'Based on 15 reviews',
+  },
 ];
+
+
+export type UserMatch = {
+  id: string,
+  image: string,
+  name: string,
+  teaches: string[],
+  wants: string[]
+}
+
+export const profiles: UserMatch[] = [
+  {
+    id: 'yoges',
+    image: "",
+    name: "Yogesh Shah",
+    teaches: ["NodeJs", "HTML", 'React'],
+    wants: ["AI/ML", "CyberSecurity"]
+  }
+  , {
+    id: 'alice-johnson',
+    image: 'https://via.placeholder.com/150',
+    name: 'Alice Johnson',
+    teaches: ['Python', 'Data Science'],
+    wants: ['JavaScript', 'Node.js'],
+  },
+  {
+    id: 'bob-smith',
+    image: "", // No image available
+    name: 'Bob Smith',
+    teaches: ['React', 'TypeScript'],
+    wants: ['UI/UX Design', 'Figma'],
+  },
+]
