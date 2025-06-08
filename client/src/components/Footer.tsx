@@ -1,9 +1,9 @@
 const Footer = () => {
   return (
-    <div className='bg-[#111827] text-[#979EAB] mb-4 '>
-      <div className='grid grid-cols-4 px-2 py-3 pt-6 border-b border-slate-400 justify-around w-8/12 mx-auto  items-center'>
+    <div className='bg-[#111827] text-[#979EAB]  '>
+      <div className='grid md:grid-cols-4 sm:grid-cols-2 grid-cols-2 px-2 py-3 pt-6 border-b border-slate-400 justify-center w-8/12 mx-auto items-center'>
         <div>
-          <div className='text-white text-2xl font-bold mb-4'>SkillSwap</div>
+          <div className='text-white sm:text-xl font-bold mb-4'>SkillSwap</div>
           <div>
             <p>Connecting learners and teachers worldwide.</p>
           </div>
