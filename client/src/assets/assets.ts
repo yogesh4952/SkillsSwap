@@ -88,3 +88,37 @@ export const categories: Category[] = [
     learners: '900+ learners',
   },
 ];
+
+export type item = {
+  title: string,
+  logo: string,
+  number: number,
+  description: string
+}
+
+export const dashboardItems: item[] = [
+  {
+    title: "Total Matches",
+    logo: "",
+    number: 24,
+    description: "+3 from last week"
+  },
+  {
+    title: "Active Sessions",
+    logo: "",
+    number: 8,
+    description: "2 scheduled today"
+  },
+  {
+    title: "Skills Learned",
+    logo: "",
+    number: 12,
+    description: "+2 this month"
+  },
+  {
+    title: "Rating",
+    logo: "",
+    number: 4.8,
+    description: "Based on 15 reviews"
+  }
+];
