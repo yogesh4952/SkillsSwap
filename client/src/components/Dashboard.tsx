@@ -4,6 +4,7 @@ import DashboardTop from '../pages/DashboardTop';
 import Matches from '../pages/Matches';
 
 import './../App.css';
+import Notification from '../pages/Notification';
 
 const Dashboard = () => {
   const { user, isSignedIn } = useUser();
@@ -40,7 +41,9 @@ const Dashboard = () => {
         </div>
 
         {/* Right */}
-        <div className='hidden sm:block border'>hancy</div>
+        <div className='hidden sm:grid  gap-5 px-2 py-1 grid-rows-3 mb-4'>
+          <Notification />
+        </div>
       </div>
     </div>
   );

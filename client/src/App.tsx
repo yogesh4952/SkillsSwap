@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Dashboard from './components/Dashboard';
 import { ToastContainer } from 'react-toastify';
+import EditProfile from './components/CreateProfile';
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/edit-profile' element={<EditProfile />} />
       </Routes>
       <ToastContainer />
     </>

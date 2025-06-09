@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 
 const Navbar = () => {
   const [isHidden, setIsHidden] = useState<boolean>(true);
-  const { isSignedIn, user } = useUser();
+  const { isSignedIn, user, isLoaded } = useUser();
   const { openSignIn, signOut, openSignUp } = useClerk();
   const { userName } = useUserContext(); // Use context for userName
   const [openProfile, setOpenProfile] = useState<boolean>(false);
@@ -28,15 +28,29 @@ const Navbar = () => {
 
   // Handle signup
   const handleSignUp = () => {
-    toast.success('Sign Up Successfully');
-    openSignUp();
+    try {
+      openSignUp();
+      if (isSignedIn) {
+        toast.success('SignedUp Succesfully');
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    }
   };
 
   // Handle Logout
 
   const handleLogout = () => {
-    signOut();
-    toast.success('Logout Succesfully');
+    if (!isLoaded) {
+      return;
+    }
+    try {
+      signOut();
+      toast.success('Logout Successfully');
+    } catch (error) {
+      toast.error('Error occurs');
+      console.log(error);
+    }
   };
 
   // Close profile dropdown and mobile menu on outside click
@@ -101,7 +115,7 @@ const Navbar = () => {
                   <Link to='/dashboard'>Dashboard</Link>
                 </div>
                 <div>
-                  <Link to='/profile'>Profile</Link>
+                  <Link to='/profile'>Edit Profile</Link>
                 </div>
                 <button
                   className='cursor-pointer'

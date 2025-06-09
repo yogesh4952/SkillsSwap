@@ -23,7 +23,7 @@ const Matches = () => {
     );
   }
   return (
-    <div className='shadow-lg rounded border border-slate-500 px-4 py-5'>
+    <div className='shadow-lg rounded border border-slate-200 px-4 py-5 mb-5'>
       <div className='flex justify-between items-center '>
         <div>
           <h1 className='text-xl sm:text-2xl md:text-3xl font-bold'>
