@@ -115,7 +115,7 @@ const Navbar = () => {
                   <Link to='/dashboard'>Dashboard</Link>
                 </div>
                 <div>
-                  <Link to='/profile'>Edit Profile</Link>
+                  <Link to='/edit-profile'>Edit Profile</Link>
                 </div>
                 <button
                   className='cursor-pointer'

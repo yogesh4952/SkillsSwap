@@ -1,5 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+
 @import 'tailwindcss';
 
+* {
+  font-family: 'Nunito', sans-serif;
+}
 .custom-grid-cols {
   display: grid;
   grid-template-columns: 75% 25%;
