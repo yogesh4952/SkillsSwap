@@ -7,7 +7,7 @@ app.use(express.json());
 
 // Connect to MongoDB
 mongoose
-  .connect('mongodb://localhost:27017/mvc_todo', {
+  .connect('', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
