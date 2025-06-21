@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import Upload from '../icons/Upload';
 
 const BasicInfo = () => {
@@ -85,19 +86,14 @@ const BasicInfo = () => {
           </p>
         </form>
       </div>
-      <div className='flex items-center justify-between'>
-        <button className='transition-all hover:bg-gray-200 cursor-pointer border border-gray-300 rounded shadow px-4 py-2'>
-          Save as draft
-        </button>
 
-        <div className='space-x-3'>
-          <button className='hover:bg-gray-200   transition-all cursor-pointer border border-gray-300 rounded shadow px-4 py-2'>
-            Preview Profile
-          </button>
-          <button className='border border-gray-300 hover:bg-gray-900 bg-black text-white transition-all cursor-pointer rounded shadow px-4 py-2'>
-            Complete Profile & Find Matches
-          </button>
-        </div>
+      <div className='flex justify-end mt-4 '>
+        <NavLink
+          to='/edit-profile/skills'
+          className='px-4 py-2 bg-black hover:bg-gray-950 transition-all cursor-pointer text-white rounded'
+        >
+          Next
+        </NavLink>
       </div>
     </div>
   );

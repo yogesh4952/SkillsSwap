@@ -156,3 +156,23 @@ export const profiles: UserMatch[] = [
     wants: ['UI/UX Design', 'Figma'],
   },
 ]
+
+export type Skill = {
+  name: string;
+  icon: string;
+};
+
+export const skills: Skill[] = [
+  { name: 'JavaScript', icon: '🟨' },
+  { name: 'Python', icon: '🐍' },
+  { name: 'React', icon: '⚛️' },
+  { name: 'Node.js', icon: '🟩' },
+  { name: 'UI/UX Design', icon: '🎨' },
+  { name: 'Machine Learning', icon: '🤖' },
+  { name: 'Data Science', icon: '📊' },
+  { name: 'Figma', icon: '🖌️' },
+  { name: 'Photography', icon: '📷' },
+  { name: 'Spanish', icon: '🇪🇸' },
+  { name: 'Marketing', icon: '📈' },
+  { name: 'Public Speaking', icon: '🎤' },
+];
