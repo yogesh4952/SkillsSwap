@@ -49,7 +49,7 @@ const EditProfileLayout = () => {
         </NavLink>
       </div>
 
-      <div className='mt-6 rounded shadow-lg border border-gray-200 px-2'>
+      <div className='mb-4'>
         <Outlet />
       </div>
     </div>
