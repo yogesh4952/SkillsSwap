@@ -176,3 +176,35 @@ export const skills: Skill[] = [
   { name: 'Marketing', icon: '📈' },
   { name: 'Public Speaking', icon: '🎤' },
 ];
+
+export type partner = {
+  image: string,
+  name: string,
+  session: number,
+  rating: number,
+  expertise: string[]
+}
+export const learningPartners: partner[] = [
+  {
+    image: "",
+    name: "Sarah Chen",
+    session: 24,
+    rating: 4.9,
+    expertise: ["React", "Node.js"]
+  },
+
+  {
+    image: "",
+    name: "Marcus Johnso",
+    session: 18,
+    rating: 4.8,
+    expertise: ["Python", "Data Science"]
+  },
+  {
+    image: "",
+    name: "Elena Rodriguez",
+    session: 31,
+    rating: 4.9,
+    expertise: ["UI/UX Design", "Figma"]
+  }
+]

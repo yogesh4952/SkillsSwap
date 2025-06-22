@@ -9,6 +9,7 @@ import EditProfileLayout from './components/EditProfileLayout';
 import BasicInfo from './pages/BasicInfo';
 import Skills from './pages/Skills';
 import LearningGoals from './pages/LearningGoals';
+import Sessions from './components/Sessions';
 
 const App = () => {
   return (
@@ -24,6 +25,8 @@ const App = () => {
           {/* Default page under create-profile */}
           <Route index element={<BasicInfo />} />
         </Route>
+
+        <Route path='/sessions' element={<Sessions />}></Route>
       </Routes>
       <ToastContainer />
     </>
