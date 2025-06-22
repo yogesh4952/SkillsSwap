@@ -1,4 +1,4 @@
-const Calendar = () => {
+const CalendarIcon = () => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -12,4 +12,4 @@ const Calendar = () => {
   );
 };
 
-export default Calendar;
+export default CalendarIcon;

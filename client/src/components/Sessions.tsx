@@ -1,4 +1,6 @@
+import CalendarWrapper from '../pages/CalendarWrapper';
 import LearningPartner from '../pages/LearningPartner';
+import SelectTime from '../pages/SelectTime';
 import SessionDetails from '../pages/SessionDetails';
 
 const Sessions = () => {
@@ -19,7 +21,8 @@ const Sessions = () => {
           <SessionDetails />
         </div>
         <div>
-          
+          <CalendarWrapper />
+          <SelectTime />
         </div>
       </div>
     </div>

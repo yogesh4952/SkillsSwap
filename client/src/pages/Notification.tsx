@@ -1,4 +1,4 @@
-import Calendar from '../icons/Calendar';
+import Calendar from '../icons/CalendarIcon';
 import Search from '../icons/Search';
 
 const Notification = () => {
