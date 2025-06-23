@@ -213,3 +213,52 @@ export const learningPartners: partner[] = [
 export const time = [
   "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "01:00 PM", "2:00 PM", "3:00 PM", " 4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM"
 ]
+
+type ChatUser = {
+  id: string;
+  name: string;
+  message: string;
+  skills: string[];
+  avatarColor: string; // optional if you want colored avatar placeholder
+  lastActive: string;
+  unreadCount: number;
+};
+
+export const chatUsers: ChatUser[] = [
+  {
+    id: '1',
+    name: 'Alice Johnson',
+    message: 'Hey! Can you help me with React state management?',
+    skills: ['React', 'Redux'],
+    avatarColor: 'bg-gray-400',
+    lastActive: '2 mins ago',
+    unreadCount: 2,
+  },
+  {
+    id: '2',
+    name: 'Bob Smith',
+    message: 'Let’s schedule a session for backend API design.',
+    skills: ['Node.js', 'Express'],
+    avatarColor: 'bg-gray-500',
+    lastActive: '5 mins ago',
+    unreadCount: 0,
+  },
+  {
+    id: '3',
+    name: 'Clara Liu',
+    message: 'Can you review my Figma layout?',
+    skills: ['UI/UX Design', 'Figma'],
+    avatarColor: 'bg-blue-300',
+    lastActive: '10 mins ago',
+    unreadCount: 1,
+  },
+  {
+    id: '4',
+    name: 'David Kim',
+    message: 'I’m interested in learning about machine learning!',
+    skills: ['Python', 'Machine Learning'],
+    avatarColor: 'bg-green-400',
+    lastActive: '20 mins ago',
+    unreadCount: 3,
+  },
+];

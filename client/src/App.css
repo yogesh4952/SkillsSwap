@@ -9,3 +9,9 @@
   display: grid;
   grid-template-columns: 75% 25%;
 }
+
+.grid-col-chat {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 30% 70%;
+}

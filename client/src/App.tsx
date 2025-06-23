@@ -10,6 +10,7 @@ import BasicInfo from './pages/BasicInfo';
 import Skills from './pages/Skills';
 import LearningGoals from './pages/LearningGoals';
 import Sessions from './components/Sessions';
+import Message from './components/Message';
 
 const App = () => {
   return (
@@ -27,6 +28,8 @@ const App = () => {
         </Route>
 
         <Route path='/sessions' element={<Sessions />}></Route>
+
+        <Route path='/messages' element={<Message />}></Route>
       </Routes>
       <ToastContainer />
     </>

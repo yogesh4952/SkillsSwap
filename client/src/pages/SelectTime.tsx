@@ -1,13 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { time } from '../assets/assets';
 import TImer from '../icons/TImer';
 
 const SelectTime = () => {
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
-
-  useEffect(() => {
-    console.log(selectedTime);
-  });
 
   return (
     <div className=' border border-gray-300 rounded shadow p-4 mt-6'>
