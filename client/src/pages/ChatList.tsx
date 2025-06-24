@@ -31,7 +31,7 @@ const ChatList = () => {
             <div className='rounded-full bg-gray-400 w-10 h-10'></div>
             <div>
               <h1 className='font-semibold'>{user.name}</h1>
-              <p className='text-gray-600'>{user.message}</p>
+              <p className='text-gray-600 line-clamp-1'>{user.message}</p>
               <div className='flex flex-wrap gap-3'>
                 {user.skills.map((skill, idx) => (
                   <span

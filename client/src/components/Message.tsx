@@ -4,8 +4,8 @@ import '../App.css';
 
 const Message = () => {
   return (
-    <div className=' mt-4 w-full mx-auto overflow-hidden rounded px-10'>
-      <div className=' grid grid-cols-1 md:grid-cols-2'>
+    <div className=' mt-4 w-full mx-auto overflow-hidden rounded px-10 '>
+      <div className='grid grid-cols-1 lg:grid-cols-[400px_1fr]  gap-5'>
         <ChatList />
         <Chat />
       </div>
