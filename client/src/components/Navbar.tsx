@@ -15,7 +15,25 @@ const Navbar = () => {
   const profileRef = useRef<HTMLDivElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const [showNavbar, setShowNavbar] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
+  const handleScroll = () => {
+    const currentScrollY = window.scrollY;
+
+    if (currentScrollY > lastScrollY) {
+      setShowNavbar(false); //Scroll Down
+    } else {
+      setShowNavbar(true);
+    }
+
+    setLastScrollY(currentScrollY);
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
   // Handle login
   const handleLogin = () => {
     try {
@@ -74,7 +92,11 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className='w-full px-4  bg-white shadow-md flex justify-around items-center sticky top-0 z-50 py-4'>
+    <nav
+      className={`px-4  bg-white shadow-md flex justify-around items-center   py-4  fixed top-0 w-full transition-transform duration-300 z-50 ${
+        showNavbar ? 'translate-y-0' : '-translate-y-full'
+      } bg-black text-white p-4 shadow`}
+    >
       {/* Logo Section */}
       <div className='flex gap-2 items-center'>
         <Logo />

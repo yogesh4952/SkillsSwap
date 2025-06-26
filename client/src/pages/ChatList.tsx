@@ -6,7 +6,7 @@ const ChatList = () => {
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
 
   return (
-    <div className='border  border-gray-300 rounded shadow px-4 py-3'>
+    <div className='border  border-gray-300 rounded shadow px-4 py-3   overflow-y-scroll'>
       <div className='flex justify-between items-center'>
         <h1 className='text-xl font-bold sm:text-2xl'>Messages</h1>
         {unreadMessages > 0 && (
