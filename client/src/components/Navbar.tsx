@@ -93,7 +93,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`px-4  bg-white shadow-md flex justify-around items-center   py-4  fixed top-0 w-full transition-transform duration-300 z-50 ${
+      className={`px-4  bg-white shadow-md flex justify-around items-center   py-4  fixed top-0 w-full transition-transform duration-300 z-10 ${
         showNavbar ? 'translate-y-0' : '-translate-y-full'
       } bg-black text-white p-4 shadow`}
     >
@@ -126,22 +126,41 @@ const Navbar = () => {
               alt='profile'
             />
             {openProfile && (
-              <div className='absolute top-10 bg-slate-100 shadow-md px-2 py-2 rounded right-5 z-10'>
-                <div className='mb-2 flex items-center gap-1 whitespace-nowrap'>
+              <div
+                className={`absolute top-10  border border-gray-300 rounded shadow  px-4 py-2 right-5 z-10 ${
+                  showNavbar ? 'translate-y-0' : '-translate-y-full'
+                }`}
+              >
+                <div
+                  className='mb-2 flex items-center gap-1 border-b border-gray-300 whitespace-nowrap'
+                  onClick={() => setOpenProfile(false)}
+                >
                   <span className='text-red-500 font-bold'>Welcome,</span>
                   <span className='font-medium'>
                     {userName || user.firstName}
                   </span>
                 </div>
-                <div className='mb-2'>
+
+                <div
+                  onClick={() => setOpenProfile(false)}
+                  className='mb-2 border-b border-gray-300'
+                >
                   <Link to='/dashboard'>Dashboard</Link>
                 </div>
-                <div>
+
+                <div
+                  onClick={() => setOpenProfile(false)}
+                  className='border-b border-gray-300'
+                >
                   <Link to='/edit-profile'>Edit Profile</Link>
                 </div>
+
                 <button
-                  className='cursor-pointer'
-                  onClick={() => handleLogout()}
+                  className='cursor-pointer border-b border-gray-300'
+                  onClick={() => {
+                    setOpenProfile(false);
+                    handleLogout();
+                  }}
                 >
                   Log Out
                 </button>
