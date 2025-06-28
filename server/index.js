@@ -5,6 +5,9 @@ import cors from 'cors';
 import connectDB from './db/db.js';
 import { verifyWebhook } from '@clerk/express/webhooks';
 import { clerkMiddleware } from '@clerk/express';
+import './instrument.js';
+import * as Sentry from '@sentry/node';
+import User from './models/userModel.js';
 
 dotenv.config();
 
@@ -22,16 +25,59 @@ app.post(
 
       console.log(evt);
 
-      // Do something with payload
-      // For this guide, log payload to console
-      // const { id } = evt.data;
-      // const eventType = evt.type;
-      // console.log(
-      //   `Received webhook with ID ${id} and event type of ${eventType}`
-      // );
-      // console.log('Webhook payload:', evt.data);
+      const eventType = evt.type;
 
-      return res.send('Webhook received');
+      if (eventType == 'user.created') {
+        const newUser = await User.create({
+          clerkId: evt.data.id,
+          firstname: evt.data.first_name,
+          lastname: evt.data.last_name,
+          email: evt.data.email_addresses,
+          imageUrl: evt.data.image_url,
+          lastActiveAt: evt.data.last_active_at,
+          phonenumber: evt.data.phone_numbers,
+        });
+      } else if (eventType == 'user.updated') {
+        try {
+          await User.findOneAndUpdate(
+            { clerkId: evt.data.id },
+            {
+              firstname: evt.data.first_name,
+              lastname: evt.data.last_name,
+              imageUrl: evt.data.image_url,
+              updatedAt: updatedTime,
+            },
+            { new: true, upsert: false }
+          );
+
+          return res.json({
+            status: 'success',
+            message: 'Updated succesfully',
+          });
+        } catch (error) {
+          return res.json({
+            success: false,
+            message: error.message,
+          });
+        }
+
+        // Optionally update your MongoDB user document
+      } else if (eventType === 'user.deleted') {
+        try {
+          const { clerkId } = evt.data;
+
+          await User.findByIdAndDelete(clerkId);
+          return res.json({
+            success: true,
+            message: 'User deleted succesfully',
+          });
+        } catch (error) {
+          return res.json({
+            success: false,
+            message: error.message,
+          });
+        }
+      }
     } catch (err) {
       console.error('Error verifying webhook:', err);
       return res.status(400).send('Error verifying webhook');
@@ -56,6 +102,12 @@ app.use(
 // Basic route
 app.get('/', (req, res) => {
   res.send('I am alive');
+});
+
+// Sentry configurations
+
+app.get('/debug-sentry', function mainHandler(req, res) {
+  throw new Error('My first Sentry error!');
 });
 
 // Connect database
