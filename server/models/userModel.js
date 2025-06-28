@@ -1,14 +1,26 @@
 import mongoose from 'mongoose';
 
-const activitySchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   firstname: {
-    type: string,
+    type: String,
     required: true,
   },
+
   lastname: {
-    type: string,
+    type: String,
     required: true,
+  },
+
+  imageUrl: {
+    type: String,
+  },
+
+  teach: {
+    type: [String], // array of Strings
+  },
+  wants: {
+    type: [String], // array of Strings
   },
 });
 
-export default mongoose.model('Activity', activitySchema);
+export default mongoose.model('User', userSchema);
