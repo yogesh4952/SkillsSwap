@@ -8,6 +8,7 @@ import { clerkMiddleware } from '@clerk/express';
 import './instrument.js';
 import * as Sentry from '@sentry/node';
 import User from './models/userModel.js';
+import userRoute from './routes/user.js';
 
 dotenv.config();
 
@@ -23,20 +24,32 @@ app.post(
         secret: process.env.CLERK_WEBHOOK_SIGNING_SECRET,
       });
 
-      console.log(evt);
-
       const eventType = evt.type;
 
       if (eventType == 'user.created') {
-        const newUser = await User.create({
-          clerkId: evt.data.id,
-          firstname: evt.data.first_name,
-          lastname: evt.data.last_name,
-          email: evt.data.email_addresses,
-          imageUrl: evt.data.image_url,
-          lastActiveAt: evt.data.last_active_at,
-          phonenumber: evt.data.phone_numbers,
-        });
+        try {
+          const data = new User({
+            clerkId: evt.data.id,
+            firstname: evt.data.first_name,
+            lastname: evt.data.last_name,
+            email: evt.data.email_addresses?.[0]?.email_address || '',
+            imageUrl: evt.data.image_url,
+            lastActiveAt: evt.data.last_active_at,
+            phonenumber: evt.data.phone_numbers?.[0]?.phone_number || '',
+          });
+
+          await data.save();
+
+          return res.status(200).json({
+            success: true,
+            message: 'User created successfully',
+          });
+        } catch (error) {
+          return res.json({
+            success: false,
+            message: error.message,
+          });
+        }
       } else if (eventType == 'user.updated') {
         try {
           await User.findOneAndUpdate(
@@ -45,14 +58,14 @@ app.post(
               firstname: evt.data.first_name,
               lastname: evt.data.last_name,
               imageUrl: evt.data.image_url,
-              updatedAt: updatedTime,
+              // Don't manually update `updatedAt` unless needed
             },
             { new: true, upsert: false }
           );
 
           return res.json({
             status: 'success',
-            message: 'Updated succesfully',
+            message: 'Updated successfully',
           });
         } catch (error) {
           return res.json({
@@ -60,13 +73,11 @@ app.post(
             message: error.message,
           });
         }
-
-        // Optionally update your MongoDB user document
       } else if (eventType === 'user.deleted') {
         try {
           const { clerkId } = evt.data;
 
-          await User.findByIdAndDelete(clerkId);
+          await User.findByIdAndDelete({ clerkId });
           return res.json({
             success: true,
             message: 'User deleted succesfully',
@@ -112,6 +123,9 @@ app.get('/debug-sentry', function mainHandler(req, res) {
 
 // Connect database
 await connectDB();
+
+// route
+app.use('/api/user', userRoute);
 
 // Express server connection
 const port = process.env.PORT || 5000;

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Mongoose } from 'mongoose';
 
 const userSchema = new mongoose.Schema(
   {
@@ -23,6 +23,13 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
 
+    bio: {
+      type: String,
+    },
+
+    location: {
+      type: String,
+    },
     imageUrl: {
       type: String,
     },
@@ -48,7 +55,12 @@ const userSchema = new mongoose.Schema(
       type: Date,
     },
 
-    connections: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    connections: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
   },
   { timestamps: true }
 );
