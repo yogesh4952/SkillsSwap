@@ -77,7 +77,7 @@ const BasicInfo = () => {
               name='bio'
               id='bio'
               value={bio}
-              onChange={(e) => setBio(e.target.value.trim())}
+              onChange={(e) => setBio(e.target.value)}
               className=' focus:outline-blue-400 min-h-40 border w-full rounded border-gray-300 px-4 py-2'
               placeholder='Tell us about yourself, your background, and what motivates you to learn and teach...
 '

@@ -3,18 +3,18 @@ import { useDataContext } from '../store/Context';
 import { useState } from 'react';
 
 const LearningGoals = () => {
-  const { wants, setWants } = useDataContext();
+  const { wants, setWants, handleSubmit } = useDataContext();
   const [addWants, setAddWants] = useState<string>('');
-
 
   const handleAddWants = () => {
     if (addWants.trim()) {
       setWants([...wants, addWants.trim().toLowerCase()]);
+      setAddWants('');
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleCompleteProfile = async () => {
+    await handleSubmit();
   };
 
   const handleRemoveWants = (index: number) => {
@@ -22,7 +22,7 @@ const LearningGoals = () => {
   };
 
   return (
-    <div>
+    <form onSubmit={(e) => e.preventDefault()}>
       <div className='mt-6 mb-3 rounded shadow-lg border border-gray-200 px-6 py-4'>
         <h1 className='text-2xl sm:text-3xl font-bold '>
           Skills You Want to Learn
@@ -122,14 +122,14 @@ const LearningGoals = () => {
             Preview Profile
           </button>
           <button
-            onClick={handleSubmit}
+            onClick={() => handleCompleteProfile()}
             className='border border-gray-300 hover:bg-gray-900 bg-black text-white transition-all cursor-pointer rounded shadow px-4 py-2'
           >
             Complete Profile & Find Matches
           </button>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 
