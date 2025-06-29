@@ -1,7 +1,19 @@
 import { NavLink } from 'react-router-dom';
 import Upload from '../icons/Upload';
+import { useDataContext } from '../store/Context';
 
 const BasicInfo = () => {
+  const {
+    firstname,
+    lastname,
+    setFirstname,
+    setLastname,
+    bio,
+    setBio,
+    location,
+    setLocation,
+  } = useDataContext();
+
   return (
     <div>
       <div className='mt-6 mb-3 rounded shadow-lg border border-gray-200 px-6 py-4'>
@@ -39,6 +51,8 @@ const BasicInfo = () => {
                 type='text'
                 name='name'
                 id='firstname'
+                value={firstname}
+                onChange={(e) => setFirstname(e.target.value.trim())}
                 placeholder='john'
               />
             </div>
@@ -49,6 +63,8 @@ const BasicInfo = () => {
                 className='border active:outline-none focus:outline-blue-400 border-gray-200 rounded px-4 py-2'
                 type='text'
                 name=''
+                value={lastname}
+                onChange={(e) => setLastname(e.target.value.trim())}
                 id='lastname'
                 placeholder='john'
               />
@@ -60,6 +76,8 @@ const BasicInfo = () => {
             <textarea
               name='bio'
               id='bio'
+              value={bio}
+              onChange={(e) => setBio(e.target.value.trim())}
               className=' focus:outline-blue-400 min-h-40 border w-full rounded border-gray-300 px-4 py-2'
               placeholder='Tell us about yourself, your background, and what motivates you to learn and teach...
 '
@@ -73,6 +91,8 @@ const BasicInfo = () => {
           <div className='flex flex-col gap-2 mt-4'>
             <label htmlFor=''>Location (Optional)</label>
             <input
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
               className='border active:outline-none focus:outline-blue-400 border-gray-200 rounded px-4 py-2'
               type='text'
               name=''

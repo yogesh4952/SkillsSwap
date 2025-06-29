@@ -1,6 +1,6 @@
 import './App.css';
 
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Dashboard from './components/Dashboard';
@@ -23,8 +23,10 @@ const App = () => {
           <Route path='basic-info' element={<BasicInfo />} />
           <Route path='skills' element={<Skills />} />
           <Route path='learning-goals' element={<LearningGoals />} />
-          {/* Default page under create-profile */}
-          <Route index element={<BasicInfo />} />
+          <Route
+            index
+            element={<Navigate to='/edit-profile/basic-info' replace />}
+          />
         </Route>
 
         <Route path='/sessions' element={<Sessions />}></Route>

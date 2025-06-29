@@ -1,7 +1,26 @@
-import { NavLink } from 'react-router-dom';
 import { skills, type Skill } from '../assets/assets';
+import { useDataContext } from '../store/Context';
+import { useState } from 'react';
 
 const LearningGoals = () => {
+  const { wants, setWants } = useDataContext();
+  const [addWants, setAddWants] = useState<string>('');
+
+
+  const handleAddWants = () => {
+    if (addWants.trim()) {
+      setWants([...wants, addWants.trim().toLowerCase()]);
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+  };
+
+  const handleRemoveWants = (index: number) => {
+    setWants(wants.filter((_, i) => i !== index));
+  };
+
   return (
     <div>
       <div className='mt-6 mb-3 rounded shadow-lg border border-gray-200 px-6 py-4'>
@@ -21,27 +40,62 @@ const LearningGoals = () => {
               type='text'
               name='skill'
               id='skill'
+              value={addWants}
+              onChange={(e) => setAddWants(e.target.value)}
               placeholder='e.g, Machine Learning, Guitar, French'
               className='px-2 w-full rounded border border-gray-300'
             />
-            <button className='px-4 rounded cursor-pointer py-2 bg-black text-white'>
+            <button
+              onClick={handleAddWants}
+              className='px-4 rounded cursor-pointer py-2 bg-black text-white'
+            >
               +
             </button>
           </div>
         </div>
+
+        {/* Display added */}
+
+        {wants.length > 0 && (
+          <div className='mt-4'>
+            <p>Your Skills:</p>
+            <ul className='flex flex-wrap gap-2'>
+              {wants.map((skill, index) => (
+                <li
+                  key={index}
+                  className='shadow flex gap-4 rounded-md border border-gray-200 px-4 py-1'
+                >
+                  {skill}
+
+                  <button
+                    onClick={() => handleRemoveWants(index)}
+                    className='text-red-500 cursor-pointer font-bold'
+                  >
+                    x
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         <div className='mt-6'>
           <p className='mb-2'>Popular Learning Goals (Click to add)</p>
 
           <div className='flex items-center flex-wrap gap-2'>
             {skills.map((skill: Skill, index: number) => (
-              <span
+              <button
+                onClick={() => {
+                  if (!wants.includes(skill.name.toLowerCase())) {
+                    setWants([...wants, skill.name.trim().toLowerCase()]);
+                  }
+                }}
                 className='shadow rounded-md border border-gray-200   px-4'
                 key={index}
               >
                 <span>{skill.icon}</span>
                 <span>{skill.name}</span>
-              </span>
+              </button>
             ))}
           </div>
         </div>
@@ -67,7 +121,10 @@ const LearningGoals = () => {
           <button className='hover:bg-gray-200   transition-all cursor-pointer border border-gray-300 rounded shadow px-4 py-2'>
             Preview Profile
           </button>
-          <button className='border border-gray-300 hover:bg-gray-900 bg-black text-white transition-all cursor-pointer rounded shadow px-4 py-2'>
+          <button
+            onClick={handleSubmit}
+            className='border border-gray-300 hover:bg-gray-900 bg-black text-white transition-all cursor-pointer rounded shadow px-4 py-2'
+          >
             Complete Profile & Find Matches
           </button>
         </div>
