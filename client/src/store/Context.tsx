@@ -1,7 +1,5 @@
 // store/Context.jsx
 
-import { useAuth } from '@clerk/clerk-react';
-import axios from 'axios';
 import {
   createContext,
   useState,
@@ -9,7 +7,6 @@ import {
   type ReactNode,
   useEffect,
 } from 'react';
-import { toast } from 'react-toastify';
 
 interface DataContextType {
   firstname: string;
@@ -32,9 +29,8 @@ interface DataContextType {
   setSuccess: (value: string) => void;
   error: string;
   setError: (value: string) => void;
-  handleSubmit: () => void;
-  token: string;
-  setToken: (value: string) => void;
+  imageUrl: string;
+  setImageUrl: (value: string) => void;
 }
 
 export const DataContext = createContext<DataContextType | undefined>(
@@ -68,59 +64,7 @@ export const ContextProvider = ({ children }: ContextProviderProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [token, setToken] = useState('');
-
-  // const { getToken } = useAuth();
-
-  // useEffect(() => {
-  //   const fetchToken = async () => {
-  //     const token = await getToken();
-  //     if (token) setToken(token);
-  //   };
-  //   fetchToken();
-  // }, [getToken]);
-
-  const handleSubmit = async () => {
-    setError('');
-    setSuccess('');
-    const formdata = new FormData();
-    if (lastname) formdata.append('lastname', lastname);
-    if (bio) formdata.append('bio', bio);
-    if (location) formdata.append('location', location);
-    if (wants) formdata.append('wants', JSON.stringify(wants));
-    if (teach) formdata.append('teach', JSON.stringify(teach));
-
-    try {
-      setIsLoading(true);
-
-      const response = await axios.put(
-        'http://localhost:5000/api/user/update-data',
-        formdata,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
-
-      console.log(response.data);
-      setIsLoading(false);
-
-      if (response.data.success) {
-        setSuccess('Profile updated successfully');
-        toast.success('Profile updated successfully');
-      } else {
-        setError(response.data.message);
-        toast.error(response.data.message);
-      }
-    } catch (err) {
-      setIsLoading(false);
-      setError('Failed to update profile');
-      toast.error('Failed to update profile');
-      console.error('Error updating profile:', err);
-    }
-  };
+  const [imageUrl, setImageUrl] = useState<string>('');
 
   useEffect(() => {
     localStorage.setItem('firstname', firstname);
@@ -133,6 +77,7 @@ export const ContextProvider = ({ children }: ContextProviderProps) => {
 
   const value: DataContextType = {
     firstname,
+
     setFirstname,
     lastname,
     setLastname,
@@ -146,15 +91,15 @@ export const ContextProvider = ({ children }: ContextProviderProps) => {
     setTeachInp,
     teach,
     setTeach,
-    handleSubmit,
     setSuccess,
     success,
     setError,
     error,
     isLoading,
     setIsLoading,
-    token,
-    setToken,
+
+    imageUrl,
+    setImageUrl,
   };
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;

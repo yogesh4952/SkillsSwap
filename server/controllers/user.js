@@ -3,11 +3,18 @@ import userModel from '../models/userModel.js';
 
 export const getUserData = async (req, res) => {
   try {
-    const userData = await userModel.find({});
+    const userId = req.auth.userId;
+    if (userId) {
+      const data = await userModel.findOne({ clerkId: userId });
+      return res.json({
+        success: true,
+        message: 'Fetched successfully',
+        data,
+      });
+    }
     return res.json({
-      success: true,
-      message: 'Fetched successfully',
-      data: userData,
+      success: false,
+      message: 'Invalid access',
     });
   } catch (error) {
     return res.json({
@@ -19,7 +26,7 @@ export const getUserData = async (req, res) => {
 
 export const updateUserData = async (req, res) => {
   try {
-    const { userId } = getAuth(req);
+    const userId = req.auth().userId;
 
     if (!userId) {
       return res.status(401).json({ success: false, message: 'Unauthorized' });
@@ -33,7 +40,7 @@ export const updateUserData = async (req, res) => {
         .json({ success: false, message: 'Teach and wants must be arrays' });
     }
 
-    const updateUser = await userModel.findByIdAndUpdate(
+    const updateUser = await userModel.findOneAndUpdate(
       { clerkId: userId },
       { $set: { firstname, lastname, bio, location, teach, wants } },
       { new: true, runValidators: true }

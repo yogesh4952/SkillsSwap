@@ -1,6 +1,9 @@
 import { NavLink } from 'react-router-dom';
 import Upload from '../icons/Upload';
 import { useDataContext } from '../store/Context';
+import { useAuth } from '@clerk/clerk-react';
+import axios from 'axios';
+import { useEffect } from 'react';
 
 const BasicInfo = () => {
   const {
@@ -12,7 +15,32 @@ const BasicInfo = () => {
     setBio,
     location,
     setLocation,
+    setImageUrl,
+    imageUrl,
   } = useDataContext();
+
+  const { getToken } = useAuth();
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const token = await getToken();
+        const response = await axios.get('http://localhost:5000/api/user', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log(response.data.data);
+        setFirstname(response.data.data.firstname);
+        setLastname(response.data.data.lastname);
+        setBio(response.data.data.bio);
+        setLocation(response.data.data.location);
+        setImageUrl(response.data.data.imageUrl);
+      } catch (error) {}
+    };
+
+    getData();
+  }, []);
 
   return (
     <div>
@@ -25,8 +53,12 @@ const BasicInfo = () => {
         </p>
 
         <div className='flex gap-5 mt-6 items-center'>
-          <div id='left' className='rounded-full w-36 h-36 bg-gray-400'>
+          <div
+            id='left'
+            className='rounded-full overflow-auto w-32 h-32 bg-gray-400'
+          >
             {/* Image */}
+            <img className='' src={imageUrl} alt='' />
           </div>
 
           <div id='right'>
