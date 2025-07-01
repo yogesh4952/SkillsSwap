@@ -127,23 +127,23 @@ const Navbar = () => {
             />
             {openProfile && (
               <div
-                className={`absolute top-10  border border-gray-300 rounded shadow  px-4 py-2 right-5 z-10 ${
+                className={`absolute top-10  border border-gray-300 bg-gray-100 rounded shadow  px-4 py-2 right-5  ${
                   showNavbar ? 'translate-y-0' : '-translate-y-full'
                 }`}
               >
                 <div
-                  className='mb-2 flex items-center gap-1 border-b border-gray-300 whitespace-nowrap'
+                  className='mb-2 flex items-center gap-1 border-b border-black whitespace-nowrap'
                   onClick={() => setOpenProfile(false)}
                 >
-                  <span className='text-red-500 font-bold'>Welcome,</span>
-                  <span className='font-medium'>
+                  <span className=' font-bold'>Welcome,</span>
+                  <span className='font-medium '>
                     {userName || user.firstName}
                   </span>
                 </div>
 
                 <div
                   onClick={() => setOpenProfile(false)}
-                  className='mb-2 border-b border-gray-300'
+                  className='mb-2 border-b'
                 >
                   <Link to='/dashboard'>Dashboard</Link>
                 </div>

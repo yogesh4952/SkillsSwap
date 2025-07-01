@@ -62,7 +62,6 @@ const LearningGoals = () => {
           },
         }
       );
-
       setIsLoading(false);
 
       if (response.data.success) {

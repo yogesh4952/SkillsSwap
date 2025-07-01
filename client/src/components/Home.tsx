@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import Banner from '../pages/Banner';
 import WhyChoose from '../pages/WhyChoose';
 import Works from '../pages/Works';
@@ -25,9 +26,12 @@ const Home = () => {
         </div>
 
         <div className='flex gap-7 justify-center items-center text-lg md:text-xl mt-4'>
-          <button className='px-4  py-2 bg-black text-white cursor-pointer rounded'>
+          <NavLink
+            to='/start-learning'
+            className='px-4  py-2 bg-black text-white cursor-pointer rounded'
+          >
             Start Learning
-          </button>
+          </NavLink>
           <button className='bg-white shadow px-4 py-2 border cursor-pointer rounded'>
             See How It Works
           </button>

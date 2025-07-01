@@ -1,5 +1,25 @@
-import { getAuth } from '@clerk/express';
 import userModel from '../models/userModel.js';
+
+
+export const getAllUserData = async (req, res) => {
+  const userId = req.auth.userId;
+
+  try {
+    const findUser = await userModel.findOne({ clerkId: userId })
+    if (findUser) {
+      const data = await userModel.find({})
+      return res.json({
+        success: true,
+        data
+      })
+    }
+  } catch (error) {
+    return res.json({
+      success: false,
+      message: error.message
+    })
+  }
+}
 
 export const getUserData = async (req, res) => {
   try {

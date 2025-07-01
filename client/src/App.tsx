@@ -11,6 +11,7 @@ import Skills from './pages/Skills';
 import LearningGoals from './pages/LearningGoals';
 import Sessions from './components/Sessions';
 import Message from './components/Message';
+import StartLearning from './components/StartLearning';
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/start-learning' element={<StartLearning />} />
         <Route path='/edit-profile' element={<EditProfileLayout />}>
           <Route path='basic-info' element={<BasicInfo />} />
           <Route path='skills' element={<Skills />} />
