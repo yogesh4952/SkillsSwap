@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
 
-    role:{
+    role: {
       type: String
     },
 
@@ -36,7 +36,7 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
 
-    
+
     imageUrl: {
       type: String,
     },

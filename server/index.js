@@ -9,6 +9,7 @@ import './instrument.js';
 import * as Sentry from '@sentry/node';
 import User from './models/userModel.js';
 import userRoute from './routes/user.js';
+import userModel from './models/userModel.js';
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.post(
       const eventType = evt.type;
 
       if (eventType == 'user.created') {
+        console.log(evt)
         try {
           const data = new User({
             clerkId: evt.data.id,
@@ -39,6 +41,14 @@ app.post(
           });
 
           await data.save();
+
+          const findUser = await userModel.find({ email })
+          if (findUser) {
+            return res.status(200).json({
+              success: true,
+              message: 'User already exist',
+            });
+          }
 
           return res.status(200).json({
             success: true,

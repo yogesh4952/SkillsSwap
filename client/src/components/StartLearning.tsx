@@ -1,7 +1,6 @@
 import { useAuth } from '@clerk/clerk-react';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import UserCardItem from '../pages/UserCardItem';
 
 const StartLearning = () => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -10,26 +9,6 @@ const StartLearning = () => {
   const data = [];
 
   const { getToken } = useAuth();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const token = await getToken();
-      const response = await axios.get(
-        'http://localhost:5000/api/user/getAllData  ',
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      console.log(response);
-      data.push(response);
-      toast.success('Succesfully fetched');
-    };
-
-    fetchData();
-  }, []);
 
   const listExperience: string[] = [
     '6+ Month Experience',
@@ -57,8 +36,8 @@ const StartLearning = () => {
   };
 
   return (
-    <div className='mt-20'>
-      <div className='mx-auto w-[80%] border border-gray-200 shadow px-4 py-2 rounded'>
+    <div className='mt-20 w-[80%] mx-auto'>
+      <div className='mx-auto ] border border-gray-200 shadow px-4 py-2 rounded'>
         <h1 className='text-center font-bold text-2xl text-gray-700'>
           Find Professionals by Skills
         </h1>
@@ -145,6 +124,7 @@ const StartLearning = () => {
           Search
         </button>
       </div>
+      <UserCardItem />
     </div>
   );
 };

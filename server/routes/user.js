@@ -6,6 +6,6 @@ const route = express.Router();
 
 route.get('/', requireAuth(), getUserData);
 route.get('/getAllData', getAllUserData)
-route.put('/update-data', requireAuth(), updateUserData);
+route.put('/update-data', updateUserData);
 
 export default route;
