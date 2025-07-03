@@ -6,240 +6,243 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useUserContext } from '../context/AppContext';
 import { toast } from 'react-toastify';
 
+interface UserContext {
+  userName: string | null;
+}
+
 const Navbar = () => {
-  const [isHidden, setIsHidden] = useState<boolean>(true);
-  const { isSignedIn, user, isLoaded } = useUser();
-  const { openSignIn, signOut, openSignUp } = useClerk();
-  const { userName } = useUserContext(); // Use context for userName
-  const [openProfile, setOpenProfile] = useState<boolean>(false);
-  const profileRef = useRef<HTMLDivElement>(null);
-  const mobileMenuRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
-  const handleScroll = () => {
-    const currentScrollY = window.scrollY;
+  const { isSignedIn, user, isLoaded } = useUser();
+  const { openSignIn, signOut, openSignUp } = useClerk();
+  const { userName } = useUserContext() as UserContext;
+  const profileRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
-    if (currentScrollY > lastScrollY) {
-      setShowNavbar(false); //Scroll Down
-    } else {
-      setShowNavbar(true);
-    }
-
-    setLastScrollY(currentScrollY);
-  };
-
+  // Show/hide navbar on scroll
   useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setShowNavbar(currentScrollY <= lastScrollY || currentScrollY < 50);
+      setLastScrollY(currentScrollY);
+    };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
-  // Handle login
-  const handleLogin = () => {
-    try {
-      openSignIn();
-      if (user) {
-        toast.success('Login Success');
-      }
-    } catch (error) {}
-  };
 
-  // Handle signup
-  const handleSignUp = () => {
-    try {
-      openSignUp();
-      if (isSignedIn) {
-        toast.success('SignedUp Succesfully');
-      }
-    } catch (error: any) {
-      toast.error(error.message);
-    }
-  };
-
-  // Handle Logout
-
-  const handleLogout = () => {
-    if (!isLoaded) {
-      return;
-    }
-    try {
-      signOut();
-      toast.success('Logout Successfully');
-    } catch (error) {
-      toast.error('Error occurs');
-      console.log(error);
-    }
-  };
-
-  // Close profile dropdown and mobile menu on outside click
+  // Close menus when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        profileRef.current &&
-        !profileRef.current.contains(event.target as Node)
-      ) {
-        setOpenProfile(false);
+      if (!profileRef.current?.contains(event.target as Node)) {
+        setIsProfileOpen(false);
       }
-      if (
-        mobileMenuRef.current &&
-        !mobileMenuRef.current.contains(event.target as Node)
-      ) {
-        setIsHidden(true);
+      if (!mobileMenuRef.current?.contains(event.target as Node)) {
+        setIsMobileMenuOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const handleLogin = () => {
+    const options = {
+      afterSignInUrl: '/dashboard',
+      redirectUrl: '/dashboard',
+      afterSignIn: () => toast.success('Login successful'),
+    };
+    openSignIn(options);
+  };
+
+  const handleSignUp = () => {
+    const options = {
+      afterSignUpUrl: '/dashboard',
+      redirectUrl: '/dashboard',
+      afterSignUp: () => toast.success('Signed up successfully'),
+    };
+    openSignUp(options);
+  };
+
+  const handleLogout = async () => {
+    if (!isLoaded) return;
+    try {
+      await signOut();
+      toast.success('Logged out successfully');
+      navigate('/');
+    } catch (error) {
+      toast.error('Logout failed');
+      console.error('Logout error:', error);
+    }
+  };
+
   return (
     <nav
-      className={`px-4  bg-white shadow-md flex justify-around items-center   py-4  fixed top-0 w-full transition-transform duration-300 z-10 ${
+      className={`fixed top-0 w-full z-50 bg-white shadow-md transition-transform duration-300 ease-in-out ${
         showNavbar ? 'translate-y-0' : '-translate-y-full'
-      } bg-black text-white p-4 shadow`}
+      }`}
     >
-      {/* Logo Section */}
-      <div className='flex gap-2 items-center'>
-        <Logo />
-        <h1
-          className='text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent cursor-pointer'
-          onClick={() => navigate('/')}
-        >
-          SkillSwap
-        </h1>
-      </div>
-
-      {/* Desktop Menu */}
-      <div className='hidden sm:flex gap-6 text-base md:text-lg text-slate-600 items-center'>
-        <div className='hover:text-black cursor-pointer transition'>
-          How it works
-        </div>
-        <div className='hover:text-black cursor-pointer transition'>
-          Features
+      <div className='container mx-auto px-4 py-4 flex justify-between items-center'>
+        {/* Logo */}
+        <div className='flex items-center gap-3'>
+          <Logo className='w-8 h-8 text-blue-600' />
+          <h1
+            className='text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent cursor-pointer'
+            onClick={() => navigate('/')}
+          >
+            SkillSwap
+          </h1>
         </div>
 
-        {isSignedIn && user ? (
-          <div className='rounded-full w-9 relative' ref={profileRef}>
-            <img
-              onClick={() => setOpenProfile(!openProfile)}
-              className='rounded-full cursor-pointer'
-              src={user.imageUrl}
-              alt='profile'
-            />
-            {openProfile && (
-              <div
-                className={`absolute top-10  border border-gray-300 bg-gray-100 rounded shadow  px-4 py-2 right-5  ${
-                  showNavbar ? 'translate-y-0' : '-translate-y-full'
-                }`}
-              >
-                <div
-                  className='mb-2 flex items-center gap-1 border-b border-black whitespace-nowrap'
-                  onClick={() => setOpenProfile(false)}
-                >
-                  <span className=' font-bold'>Welcome,</span>
-                  <span className='font-medium '>
-                    {userName || user.firstName}
-                  </span>
-                </div>
-
-                <div
-                  onClick={() => setOpenProfile(false)}
-                  className='mb-2 border-b'
-                >
-                  <Link to='/dashboard'>Dashboard</Link>
-                </div>
-
-                <div
-                  onClick={() => setOpenProfile(false)}
-                  className='border-b border-gray-300'
-                >
-                  <Link to='/edit-profile'>Edit Profile</Link>
-                </div>
-
-                <button
-                  className='cursor-pointer border-b border-gray-300'
-                  onClick={() => {
-                    setOpenProfile(false);
-                    handleLogout();
-                  }}
-                >
-                  Log Out
-                </button>
-              </div>
-            )}
-          </div>
-        ) : (
-          <>
-            <button
-              onClick={handleLogin}
-              className='hover:text-black cursor-pointer transition'
-            >
-              Login
-            </button>
-            <button
-              onClick={handleSignUp}
-              className='px-4 py-2 bg-black text-white rounded-md hover:bg-slate-800 transition'
-            >
-              Get Started
-            </button>
-          </>
-        )}
-      </div>
-
-      {/* Mobile Menu Icon */}
-      <div
-        className='sm:hidden cursor-pointer'
-        onClick={() => setIsHidden(!isHidden)}
-      >
-        <Menu />
-      </div>
-
-      {/* Mobile Dropdown Menu */}
-      {!isHidden && (
-        <div
-          ref={mobileMenuRef}
-          className='absolute top-16 right-6 bg-white shadow-lg rounded-md px-4 py-2 sm:hidden z-50'
-        >
-          <div className='py-1 text-slate-700 hover:text-black cursor-pointer'>
-            How it works
-          </div>
-          <div className='py-1 text-slate-700 hover:text-black cursor-pointer'>
+        {/* Desktop Menu */}
+        <div className='hidden sm:flex items-center gap-6 text-base font-medium text-gray-600'>
+          <Link to='/how-it-works' className='hover:text-blue-600'>
+            How It Works
+          </Link>
+          <Link to='/features' className='hover:text-blue-600'>
             Features
-          </div>
+          </Link>
 
-          {isSignedIn && user ? (
-            <>
-              <div className='py-1 text-slate-700'>
-                Welcome, {userName || user.firstName}
-              </div>
-              <div className='py-1'>
-                <Link to='/dashboard'>Dashboard</Link>
-              </div>
-              <div className='py-1'>
-                <Link to='/profile'>Profile</Link>
-              </div>
+          {isSignedIn && user && isLoaded ? (
+            <div className='relative' ref={profileRef}>
               <button
-                className='py-1 text-slate-700 hover:text-black cursor-pointer'
-                onClick={() => signOut()}
+                onClick={() => setIsProfileOpen(!isProfileOpen)}
+                className='flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-full'
               >
-                Log Out
+                <img
+                  src={user.imageUrl || '/fallback-avatar.png'}
+                  alt={`${userName || user.firstName || 'User'}'s profile`}
+                  className='w-10 h-10 rounded-full border-2 border-gray-200 object-cover'
+                  onError={(e) =>
+                    (e.currentTarget.src = '/fallback-avatar.png')
+                  }
+                />
+                <span className='hidden md:inline text-gray-800 font-semibold'>
+                  {userName || user.firstName || 'User'}
+                </span>
               </button>
-            </>
+
+              {isProfileOpen && (
+                <div className='absolute top-12 right-0 w-48 bg-white border border-gray-200 rounded-lg shadow-xl py-2 z-50'>
+                  <div className='px-4 py-2 border-b border-gray-200'>
+                    <span className='text-sm font-semibold text-gray-800'>
+                      {userName || user.firstName || 'User'}
+                    </span>
+                  </div>
+                  <Link
+                    to='/dashboard'
+                    className='block px-4 py-2 text-sm hover:bg-blue-50'
+                    onClick={() => setIsProfileOpen(false)}
+                  >
+                    Dashboard
+                  </Link>
+                  <Link
+                    to='/edit-profile'
+                    className='block px-4 py-2 text-sm hover:bg-blue-50'
+                    onClick={() => setIsProfileOpen(false)}
+                  >
+                    Edit Profile
+                  </Link>
+                  <button
+                    className='w-full text-left px-4 py-2 text-sm hover:bg-blue-50'
+                    onClick={() => {
+                      setIsProfileOpen(false);
+                      handleLogout();
+                    }}
+                  >
+                    Log Out
+                  </button>
+                </div>
+              )}
+            </div>
           ) : (
             <>
-              <div
-                onClick={handleLogin}
-                className='py-1 text-slate-700 hover:text-black cursor-pointer'
-              >
+              <button onClick={handleLogin} className='hover:text-blue-600'>
                 Login
-              </div>
+              </button>
               <button
                 onClick={handleSignUp}
-                className='w-full mt-2 px-3 py-2 bg-black text-white rounded hover:bg-slate-800 transition'
+                className='px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700'
               >
                 Get Started
               </button>
             </>
           )}
+        </div>
+
+        {/* Mobile Menu Icon */}
+        <button
+          className='sm:hidden text-gray-600 hover:text-blue-600 focus:outline-none'
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          <Menu className='w-6 h-6' />
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div
+          ref={mobileMenuRef}
+          className='sm:hidden bg-white px-4 py-4 shadow-md'
+        >
+          <div className='flex flex-col gap-3'>
+            <Link to='/how-it-works' onClick={() => setIsMobileMenuOpen(false)}>
+              How It Works
+            </Link>
+            <Link to='/features' onClick={() => setIsMobileMenuOpen(false)}>
+              Features
+            </Link>
+
+            {isSignedIn && user && isLoaded ? (
+              <>
+                <div className='font-semibold text-gray-800'>
+                  Welcome, {userName || user.firstName || 'User'}
+                </div>
+                <Link
+                  to='/dashboard'
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Dashboard
+                </Link>
+                <Link
+                  to='/edit-profile'
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Edit Profile
+                </Link>
+                <button
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    handleLogout();
+                  }}
+                >
+                  Log Out
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    handleLogin();
+                  }}
+                >
+                  Login
+                </button>
+                <button
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    handleSignUp();
+                  }}
+                  className='px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700'
+                >
+                  Get Started
+                </button>
+              </>
+            )}
+          </div>
         </div>
       )}
     </nav>

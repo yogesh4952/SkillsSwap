@@ -34,6 +34,7 @@ const BasicInfo = () => {
         setFirstname(response.data.data.firstname);
         setLastname(response.data.data.lastname);
         setBio(response.data.data.bio);
+
         setLocation(response.data.data.location);
         setImageUrl(response.data.data.imageUrl);
       } catch (error) {}
@@ -42,6 +43,15 @@ const BasicInfo = () => {
     getData();
   }, []);
 
+  useEffect(() => {
+    const getCityFromCoords = async () => {
+      const response = await fetch(
+        `https://us1.locationiq.com/v1/reverse?key=YOUR_API_KEY&lat=${location.latitude}&lon=${location.longitude}&format=json`
+      );
+      const data = await response.json();
+      console.log(data.address); // shows city, state, country, etc.
+    };
+  }, []);
   return (
     <div>
       <div className='mt-6 mb-3 rounded shadow-lg border border-gray-200 px-6 py-4'>
@@ -129,7 +139,7 @@ const BasicInfo = () => {
               type='text'
               name=''
               id=''
-              placeholder='Lamki , Kailali'
+              placeholder='city,country'
             />
           </div>
           <p className='mt-2 text-gray-500'>

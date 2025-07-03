@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import userModel from '../models/userModel.js';
 
 
@@ -81,3 +82,26 @@ export const updateUserData = async (req, res) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
+
+export const updateUserLocation = async (req, res) => {
+  try {
+    const userId = req.auth.userId;
+    const { longitude, latitude } = req.body;
+    console.log(req.body)
+    const updatedUser = await userModel.findOneAndUpdate({ clerkId: userId }, {
+      $set: {
+        'location.longitude': longitude,
+        'location.latitude': latitude
+      }
+    },
+      { new: true })
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    return res.status(200).json({ message: 'Location updated', user: updatedUser });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Server error' });
+  }
+}

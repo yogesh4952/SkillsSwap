@@ -1,12 +1,10 @@
 import { useAuth } from '@clerk/clerk-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import UserCardItem from '../pages/UserCardItem';
 
 const StartLearning = () => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-
-  const data = [];
 
   const { getToken } = useAuth();
 

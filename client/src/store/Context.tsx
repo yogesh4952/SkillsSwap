@@ -15,7 +15,7 @@ interface DataContextType {
   setLastname: (value: string) => void;
   bio: string;
   setBio: (value: string) => void;
-  location: string;
+  location: {};
   setLocation: (value: string) => void;
   wants: string[];
   setWants: (value: string[]) => void;

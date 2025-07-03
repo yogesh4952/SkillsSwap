@@ -1,10 +1,89 @@
-import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Banner from '../pages/Banner';
 import WhyChoose from '../pages/WhyChoose';
 import Works from '../pages/Works';
 import Footer from './Footer';
+import { useAuth, useUser } from '@clerk/clerk-react';
+import { toast } from 'react-toastify';
+import { useEffect, useState } from 'react';
+import axiosClient from '../axiosInstance';
 
 const Home = () => {
+  const navigate = useNavigate();
+  const { isSignedIn } = useUser();
+  const handleRedirectStartLearning = () => {
+    try {
+      if (isSignedIn) {
+        navigate('/start-learning');
+      } else {
+        navigate('/');
+        toast.error('You must signed in !!!');
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+  const [latitude, setLatitude] = useState<number | null>(null);
+  const [longitude, setLongitude] = useState<number | null>(null);
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((pos) => {
+      setLatitude(pos.coords.latitude);
+      setLongitude(pos.coords.longitude);
+    });
+  });
+
+  useEffect(() => {
+    if (latitude !== null && longitude !== null) {
+      const fetch = async () => {
+        try {
+          const token = await getToken();
+          const response = await axiosClient.put(
+            '/user/update-location',
+            { longitude, latitude },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          console.log('Location updated:', response.data);
+        } catch (error) {
+          console.log('Error updating location:', error);
+        }
+      };
+
+      fetch();
+    }
+  }, [longitude, latitude]);
+
+  const { getToken } = useAuth();
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const token = await getToken();
+        const response = await axiosClient.put(
+          '/user/update-location',
+          { longitude, latitude },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (response) {
+          console.log(response);
+        } else {
+          toast.error('response aayen');
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetch();
+  }, [longitude, latitude]);
   return (
     <>
       <div className='flex flex-col mt-15 justify-center items-center'>
@@ -26,12 +105,12 @@ const Home = () => {
         </div>
 
         <div className='flex gap-7 justify-center items-center text-lg md:text-xl mt-4'>
-          <NavLink
-            to='/start-learning'
+          <button
+            onClick={() => handleRedirectStartLearning()}
             className='px-4  py-2 bg-black text-white cursor-pointer rounded'
           >
             Start Learning
-          </NavLink>
+          </button>
           <button className='bg-white shadow px-4 py-2 border cursor-pointer rounded'>
             See How It Works
           </button>
