@@ -12,7 +12,8 @@
     "mongoose": "^8.16.1",
     "multer": "^2.0.1",
     "nodemon": "^3.1.10",
-    "socket.io": "^4.8.1"
+    "socket.io": "^4.8.1",
+    "zod": "^3.25.76"
   },
   "name": "server",
   "version": "1.0.0",

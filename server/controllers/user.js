@@ -5,7 +5,7 @@ import multer from 'multer'
 
 
 export const getAllUserData = async (req, res) => {
-  const userId = req.auth.userId;
+  const userId = req.auth().userId;
 
   try {
     const findUser = await userModel.findOne({ clerkId: userId })
@@ -87,7 +87,7 @@ export const updateUserData = async (req, res) => {
 
 export const updateUserLocation = async (req, res) => {
   try {
-    const userId = req.auth.userId;
+    const userId = req.auth().userId;
     const { longitude, latitude } = req.body;
     console.log(req.body)
     const updatedUser = await userModel.findOneAndUpdate({ clerkId: userId }, {
@@ -109,17 +109,36 @@ export const updateUserLocation = async (req, res) => {
 
 }
 
-
-const uploadImage = async (req, res) => {
+export const uploadImage = async (req, res) => {
   try {
     const file = req.file;
-    const clerkId = req.auth
-    console.log(clerkId)
-    if (file) {
-      const updatedData = await userModel.find({ clerkId: id })
+    const { userId } = req.auth();
+    console.log(req)
 
+    if (!file) {
+      return res.status(400).json({
+        success: false,
+        message: "No file uploaded",
+      });
     }
-  } catch (error) {
 
+    // 🔍 Assuming you're trying to update the user with the uploaded image
+    const updatedUser = await userModel.findOneAndUpdate(
+      { clerkId: userId },
+      { imageUrl: file.path }, // ✅ Or whatever field you're using
+      { new: true }
+    );
+
+    return res.json({
+      success: true,
+      message: "File uploaded successfully",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Something went wrong",
+    });
   }
-}
+};

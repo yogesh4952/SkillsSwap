@@ -108,9 +108,10 @@ app.post(
 
 // Middleware
 app.use(express.json());
-app.use(express.urlencoded())
 app.use(cookieParser());
 app.use(clerkMiddleware());
+app.use('/uploads', express.static('uploads'));
+
 
 app.use(
   cors({

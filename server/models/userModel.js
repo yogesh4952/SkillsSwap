@@ -1,67 +1,39 @@
 import mongoose, { Mongoose } from 'mongoose';
+import { z } from 'zod'
+
 
 const userSchema = new mongoose.Schema(
   {
-    clerkId: {
-      type: String,
-      required: true,
-      unique: true,
-    },
+    clerkId: z.string().min(1, 'Clerk ID is required'),
 
 
-    firstname: {
-      type: String,
-      required: true,
-    },
+    firstname: z.string().min(2, 'Firstname must be the length greater than 2'),
 
-    lastname: {
-      type: String,
-      required: true,
-    },
+    lastname: z.string(),
 
-    role: {
-      type: String
-    },
+    role: z.string(),
+    email: z.string().email("Invalid Email"),
 
-    email: {
-      type: String,
-      required: true,
-    },
+    bio: z.string(),
 
-    bio: {
-      type: String,
-    },
-
-    location: {
-      longitude: { type: String },
-      latitude: { type: String },
-    },
+    location: z.object({
+      longitude: z.string().optional(),
+      latitude: z.string().optional(),
+    }),
 
 
-    imageUrl: {
-      type: String,
-    },
+    imageUrl: z.string().url().optional(),
 
-    teach: {
-      type: [String], // array of Strings
-    },
+    teach: z.array(z.string().optional()),
 
-    wants: {
-      type: [String], // array of Strings
-    },
+    wants: z.array(z.string().optional()),
 
-    rating: {
-      type: Number,
-      default: 0,
-    },
 
-    phonenumber: {
-      type: Number,
-    },
+    rating: z.number().min(0).max(5).optional(),
 
-    lastActiveAt: {
-      type: Date,
-    },
+    phonenumber: z.number().optional(),
+
+    lastActiveAt: z.date().optional(),
 
     connections: [
       {

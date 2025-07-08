@@ -22,7 +22,7 @@ const BasicInfo = () => {
   } = useDataContext();
 
   const { getToken } = useAuth();
-  const [file, setFile] = useState<File | null>(null);
+  const [image, setImage] = useState<File | null>(null);
 
   useEffect(() => {
     const getData = async () => {
@@ -53,31 +53,34 @@ const BasicInfo = () => {
     };
 
     getData();
-  }, []);
+  }, [imageUrl, image]);
 
   const handleChangeImageUrl = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
       setImageUrl(URL.createObjectURL(selectedFile)); // for preview
-      setFile(selectedFile); // actual File object for upload
+      setImage(selectedFile); // actual File object for upload
     }
   };
 
-  const handleSubmitImageUpload = async () => {
+  const handleSubmitImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
     try {
       const formData = new FormData();
       const token = await getToken();
-      formData.append('profile', file);
+      formData.append('profile', image);
 
-      const data = await axiosClient.post('/upload-image', imageUrl, {
+      const data = await axiosClient.post('/user/update-image', formData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'Multipart/form-data',
+          'Content-Type': 'multipart/form-data',
         },
       });
 
-      if (data.success) {
+      if (data.data.success) {
         toast.success('Image uploaded succesfully');
+        const serverImagePath = data.data.user.imageUrl;
+        setImageUrl(`http://localhost:5000/${serverImagePath}`);
       } else {
         toast.error('Failde to upload image');
       }
