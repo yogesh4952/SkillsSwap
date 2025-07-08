@@ -1,5 +1,7 @@
-import { useId } from 'react';
+import { rewriteFramesIntegration } from '@sentry/node';
 import userModel from '../models/userModel.js';
+import multer from 'multer'
+
 
 
 export const getAllUserData = async (req, res) => {
@@ -103,5 +105,21 @@ export const updateUserLocation = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Server error' });
+  }
+
+}
+
+
+const uploadImage = async (req, res) => {
+  try {
+    const file = req.file;
+    const clerkId = req.auth
+    console.log(clerkId)
+    if (file) {
+      const updatedData = await userModel.find({ clerkId: id })
+
+    }
+  } catch (error) {
+
   }
 }

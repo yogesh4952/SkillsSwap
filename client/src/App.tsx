@@ -6,7 +6,7 @@ import Home from './components/Home';
 import Dashboard from './components/Dashboard';
 import { ToastContainer } from 'react-toastify';
 import EditProfileLayout from './components/EditProfileLayout';
-import BasicInfo from './pages/BasicInfo';
+import BasicInfo from './pages/Edit Profile/BasicInfo';
 import Skills from './pages/Skills';
 import LearningGoals from './pages/LearningGoals';
 import Sessions from './components/Sessions';
