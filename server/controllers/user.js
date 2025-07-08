@@ -55,6 +55,15 @@ export const updateUserData = async (req, res) => {
       return res.status(401).json({ success: false, message: 'Unauthorized' });
     }
 
+    const result = userModel.safeParse(req.body)
+    if (!result.success) {
+      return res.status(400).json({
+        success: false,
+        message: "Validation failed",
+        errors: result.error.flatten(),
+      });
+    }
+
     const { firstname, lastname, bio, location, teach, wants } = req.body;
 
     if ((teach && !Array.isArray(teach)) || (wants && !Array.isArray(wants))) {
