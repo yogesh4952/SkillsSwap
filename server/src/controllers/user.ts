@@ -98,7 +98,7 @@ export const uploadImage = async (req: Request, res: Response) => {
   const { userId } = getAuth(req);
   if (!userId) return res.status(401).json({ success: false, message: "Unauthorized" });
 
-  const file = req.file;
+  const file:any = req.file;
 
   if (!file) {
     return res.status(400).json({ success: false, message: "No file uploaded" });
